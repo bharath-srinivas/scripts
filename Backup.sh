@@ -5,7 +5,8 @@ export DIRECTORY=$HOME/path/to/create/backup/directory/
 export WEB_DIRECTORY=/path/to/wordpress/directory
 export DB_FILE=File_name_"$NOW".sql
 export WEB_FILE=File_name_"$NOW".tar.gz
-export OLD_FILES="find "$DIRECTORY"/* -mtime +30 -print"
+export OLD_FILES="find "$DIRECTORY"/* -mtime +60 -print"
+export $LINES=$($OLD_FILES | wc -l)
 MYSQL_PASS=password
 SYS_PASS=password
 
@@ -25,15 +26,12 @@ function backup() {
 	cd "$DIRECTORY"
 
 	# Delete the backup files which are older than 2 months to clear up some space for newer 		backup
-	yes y | find "$DIRECTORY"/* -mtime +30 -exec rm {} \;
+	yes y | find "$DIRECTORY"/* -mtime +60 -exec rm {} \;
 	
 	# Check whether the older backup files has been deleted
-	for i in "$OLD_FILES"; do
-		if [[ $i != "$DB_FILE" || $i != "$WEB_FILE" ]]; then
-			is_deleted=true
-		else
-			:
-		fi
+	if [[ $LINES -eq 0 ]]; then
+		is_deleted=true
+	fi
 	done
 
 	# Tell the user whether the deletion proceess has succeeded or not
