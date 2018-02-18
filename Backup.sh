@@ -5,10 +5,10 @@ export DIRECTORY=$HOME/path/to/create/backup/directory/
 export WEB_DIRECTORY=/path/to/wordpress/directory
 export DB_FILE=File_name_"$NOW".sql
 export WEB_FILE=File_name_"$NOW".tar.gz
-export OLD_FILES="find "$DIRECTORY"/* -mtime +60 -print"
-export $LINES=$($OLD_FILES | wc -l)
-MYSQL_PASS=password
-SYS_PASS=password
+export OLD_FILES="find "${DIRECTORY}"/* -mtime +60 -print"
+export $LINES=$(${OLD_FILES} | wc -l)
+MYSQL_PASS="password"
+SYS_PASS="password"
 
 #Flag to find out whether the process has succeeded or not
 export is_success=false
@@ -32,9 +32,8 @@ function backup() {
 	if [[ $LINES -eq 0 ]]; then
 		is_deleted=true
 	fi
-	done
 
-	# Tell the user whether the deletion proceess has succeeded or not
+	# Tell the user whether the deletion process has succeeded or not
 	if [ "$is_deleted" == true ]; then
 		echo "Backup files that were older than 30 days has been deleted successfully"
 	else

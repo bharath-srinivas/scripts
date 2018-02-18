@@ -1,4 +1,4 @@
-#Created by Bharath Srinivas on 28/11/2016
+# Created by Bharath Srinivas on 28/11/2016
 
 #!/bin/bash -e
 
@@ -10,25 +10,25 @@ export isSuccess=false
 
 function checkDep() {
 	isDone=false
-	while ! $isDone; do
-		if [[ $PYDEPENDENCY -eq 0 && $PIPDEPENDENCY -gt 0 ]]; then
+	while ! ${isDone}; do
+		if [[ ${PYDEPENDENCY} -eq 0 && ${PIPDEPENDENCY} -gt 0 ]]; then
 			echo "Your system has all the dependencies installed to run this program."
 			sleep 2
 			echo "Now executing the program. Please wait..."
 			sleep 2
-			$PROGRAM
+			${PROGRAM}
 			isDone=true
 			isSuccess=true
 
-		elif [[ $PIPDEPENDENCY -gt 0 && $PYDEPENDENCY -gt 0 ]]; then
+		elif [[ ${PIPDEPENDENCY} -gt 0 && ${PYDEPENDENCY} -gt 0 ]]; then
 			echo "Your system is missing a required dependency. Do you want to install it now[Y/n]? "
 			read choice
-			if [[ ${choice,,} == "y" || $choice == '' ]]; then
+			if [[ ${choice,,} == "y" || ${choice} == '' ]]; then
 				sudo pip install pexpect;
 				sleep 2
 				echo "The dependency has been successfully installed. Now executing the program..."
 				sleep 2
-				$PROGRAM
+				${PROGRAM}
 				isDone=true
 				isSuccess=true
 			elif [ ${choice,,} == 'n' ]; then
@@ -42,12 +42,12 @@ function checkDep() {
 		else
 			echo "Your system doesn't have the required dependencies installed. Do you want to install them now[Y/n]? "
 			read choice1
-			if [[ ${choice1,,} == 'y' || $choice == '' ]]; then
+			if [[ ${choice1,,} == 'y' || ${choice} == '' ]]; then
 				sudo apt-get install python-pip && sudo pip install pexpect;
 				sleep 2
 				echo "The dependencies has been successfully installed. Now executing the program..."
 				sleep 2
-				$PROGRAM
+				${PROGRAM}
 				isDone=true
 				isSuccess=true
 			elif [ ${choice1,,} == 'n' ]; then
@@ -62,7 +62,7 @@ function checkDep() {
 }
 
 function result() {
-	if [ $isSuccess == true ]; then
+	if [ ${isSuccess} == true ]; then
 		:
 	else
 		echo "The execution of the program has been stopped because of missing dependencies."
